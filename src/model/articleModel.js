@@ -1,5 +1,5 @@
 'use strict';
-require('dotenv').config();
+
 const mongoose = require('mongoose');
 
 const articles = new mongoose.Schema({

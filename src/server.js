@@ -31,6 +31,6 @@ module.exports={
   server: app,
   start: (port) => {
     const PORT = process.env.PORT || 4443;
-    app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`));
+    app.listen(PORT, ()=> console.log(`Bloging Service is not listening on port ${PORT}`));
   },
 };
