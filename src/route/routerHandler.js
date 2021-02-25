@@ -8,22 +8,29 @@ function handlerGenerator (method){
       return;
     }
 
+    const modelPath = req.params.model;
+    // if requesting path is not projects nor articles, user get 404
+    if (modelPath !='projects' && modelPath != 'articles') {
+      next();
+      return;
+    }
+
     try{
       let result;
       switch(method){
-        case 'findAll':
+        case 'getAll':
           result = await req.model.find({});
           break;
-        case 'findOne':
+        case 'getOneById':
           result = await req.model.findById(req.params.id);
           break;
-        case 'new':
+        case 'createOne':
           result = await new req.model(req.body).save();
           break;
-        case 'update':
+        case 'updateOne':
           result = await req.model.updateOne({_id: req.params.id}, req.body);
           break;
-        case 'delete':
+        case 'deleteOne':
           result = await req.model.deleteOne({_id: req.params.id});
       }
       res.json(result);
@@ -34,11 +41,11 @@ function handlerGenerator (method){
   };
 }
 
-const getAll = handlerGenerator('findAll');
-const getOne = handlerGenerator('findOne');
-const createOne = handlerGenerator('new');
-const updateOne = handlerGenerator('update');
-const deleteOne = handlerGenerator('delete');
+const getAll = handlerGenerator('getAll');
+const getOneById = handlerGenerator('getOneById');
+const createOne = handlerGenerator('createOne');
+const updateOne = handlerGenerator('updateOne');
+const deleteOne = handlerGenerator('deleteOne');
 
 
-module.exports = {getAll, getOne, createOne, updateOne, deleteOne};
+module.exports = {getAll, getOneById, createOne, updateOne, deleteOne};
