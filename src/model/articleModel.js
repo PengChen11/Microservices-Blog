@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 const articles = new mongoose.Schema({
-  author: { type: String, requried: true},
+  author: { type: String, required: true},
   title: { type: String, required: true},
   sub_title: {type: String},
   comments: [{ 

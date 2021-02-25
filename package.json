@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/PengChen11/Microservices-Blog#readme",
   "devDependencies": {
+    "@code-fellows/supergoose": "^1.0.11",
     "jest": "^26.6.3"
   }
 }
