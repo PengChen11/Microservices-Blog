@@ -20,9 +20,9 @@ app.use('/api/v1',router);
 
 
 // routes error handlers
-const fourOfour = require('./middleware/404');
+const fourOfour = require('./middleware/404.js');
 app.use('*', fourOfour);
-const svrErrors = require('./middleware/error');
+const svrErrors = require('./middleware/error.js');
 app.use(svrErrors);
 
 

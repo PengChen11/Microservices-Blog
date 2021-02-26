@@ -34,6 +34,8 @@ module.exports = async () =>{
 
       // if success connect to API gateway for the 1st time, record an event
       monitor('Blog Service now connected to API Gateway', 'event', '200');
+
+      // delete when deploying
       console.log('Blog Service now connected to API Gateway');
     }
     // for dev only, delete when deploy
