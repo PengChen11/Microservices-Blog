@@ -19,7 +19,6 @@ const router = require('./route/router.js');
 app.use('/api/v1',router);
 
 
-
 // routes error handlers
 const fourOfour = require('./middleware/404');
 app.use('*', fourOfour);
@@ -31,6 +30,6 @@ module.exports={
   server: app,
   start: (port) => {
     const PORT = process.env.PORT || 4443;
-    app.listen(PORT, ()=> console.log(`Bloging Service is not listening on port ${PORT}`));
+    app.listen(PORT, ()=> console.log(`Bloging Service is now listening on port ${PORT}`));
   },
 };

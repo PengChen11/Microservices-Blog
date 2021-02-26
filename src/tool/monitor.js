@@ -1,49 +1,77 @@
 'use strict';
+require('dotenv').config();
 const axios = require('axios');
+const getToken = require('./getToken.js');
 
-module.exports = async (data, modelSelector, type=undefined ) => {
-  let modelPath;
-  
-  switch (modelSelector){
 
-    case 'warning':
-      modelPath = 'warnings';
-      break;
+module.exports = async (data, logType, type=undefined ) => {
+
+  // step 1, get authenticated through API gateway to get a token, if it does not exsit already.
+
+
+  if (!global.token) {
+    await getToken();
+  }
+
+  // step 2, record system monitoring log through API gateway
+  let logPath;
+  const time = new Date();
+  // this payload is going to be recorded in DB
+  let payload = {
+    service_name: 'blog',
+    time: time.toISOString(),
+    type,
+    message: typeof(data)==='string'? data : undefined,
+  };
+
+  // Only events data came in as String, that's a general messages 
+  switch (logType){
+
     case 'event':
-      modelPath = 'events';
+      logPath = 'events';
+      break;
+    case 'warning':
+      logPath = 'warnings';
+      // warning OBJ contains data needs to be parsed.
+      payload = {
+        ...payload,
+        req_ip: data.req_ip,
+        method: data.method,
+        target_url: data.target_url,
+        description: data.description,
+      };
       break;
     default:
-      modelPath = 'errors';
+      logPath = 'errors';
       //Errors Obj contains data needs to be parsed.
-      data = {
-        ...data,
-        error: {
-          code: data.error.code,
-          message: data.error.message,
-          stack: data.error.stack,
-        },
+      payload = {
+        ...payload,
+        req_ip: data.req_ip,
+        method: data.method,
+        target_url: data.target_url,
+        description: data.description,
+        message: data.error.message,
+        code: data.error.code,
+        stack: data.error.stack,
       };
       break;
   }
 
   try {
-    const time = new Date();
     const reqConfig = {
       method: 'post',
-      url: `${authServiceURL}/user/${id}/password`,
+      url: `${process.env.API_GATEWAY_URL}/monitor/${logPath}`,
+      data: payload,
       headers: {
-        Authorization: `Bearer ${req.token}`,
+        Authorization: `Bearer ${global.token}`,
       },
-      data: req.body,
-    }; 
-    await new modelPath({
-      service_name: 'monitor',
-      time: time.toISOString(),
-      type,
-      data: typeof(data)!='string'? JSON.stringify(data) : data,
-    }).save();
+    };
+    
+    await axios(reqConfig);
 
   } catch (error){
-    console.log('Error occourred when trying to record in DB', error);
+    // in general, this only happens when connection to API gateway is lost. We will figure out anothe way to notify admin later.
+    // one way is to use AWS SMS Queue service.
+    console.log('Error occourred when trying to logging in to system monitoring service through API gateway', error.data);
   }
 };
