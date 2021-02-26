@@ -1,8 +1,9 @@
 'use strict';
-const axios = require('axios');
+global.token = '';
 require('dotenv').config();
 const mongoose = require('mongoose');
 const server = require('./src/server.js');
+const monitor = require('./src/tool/monitor.js');
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const mongooseOptions = {
@@ -13,39 +14,24 @@ const mongooseOptions = {
 };
 
 async function connectDB () {
-  await mongoose.connect(MONGODB_URI, mongooseOptions);
-  console.log('connected to DB');
+  try {
+    await mongoose.connect(MONGODB_URI, mongooseOptions);
+    monitor('Blog service now connected to DB', 'event', '200');
+  } catch (error){
+    // delete when deploy
+    console.log('**** DB connection error',error);
+
+    monitor({description:'Blog Service can NOT connect to Database', error}, 'error', '410');
+  }
 } 
 
-try {
-  connectDB();
-} catch (e ) {
-  // this goes to log handler later
-  console.error(e);
-}
+connectDB();
 
 
 server.start();
 
 // register service with API gateway
-const registerService = async () =>{
-
-  const reqConfig = {
-    method: 'post',
-    url: process.env.API_GATEWAY_URL,
-    data: {
-      service_name: 'blogService',
-      service_url: process.env.MY_URL,
-    },
-  };
-  try {
-    const response = await axios(reqConfig);
-    console.log('response from gate way', response.data);
-  }
-  catch (error){
-    console.log('gateway connection error');
-  }
-};
+const registerService = require('./src/tool/register.js');
 
 registerService();
 
