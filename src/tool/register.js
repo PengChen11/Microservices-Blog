@@ -38,9 +38,9 @@ module.exports = async () =>{
       // delete when deploying
       console.log('Blog Service now connected to API Gateway');
     }
-    // for dev only, delete when deploy
   }
   catch (error){
+    // this only works if the API gateway service registering route is broken, while system monitoring routes still works. if API gate way is totally broken, then nothing will work.
     
     monitor({description:'Blog Service can NOT connect to API Gateway', error}, 'error', '410');
 
