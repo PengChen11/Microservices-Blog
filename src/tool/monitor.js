@@ -18,7 +18,7 @@ module.exports = async (data, logType, type=undefined ) => {
   const time = new Date();
   // this payload is going to be recorded in DB
   let payload = {
-    service_name: 'Auth',
+    service_name: 'Blog',
     time: time.toISOString(),
     type,
     message: typeof(data)==='string'? data : undefined,
