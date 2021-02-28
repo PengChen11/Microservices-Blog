@@ -27,13 +27,13 @@ async function connectDB () {
 
 connectDB();
 
-
-server.start();
-
 // register service with API gateway
 const registerService = require('./src/tool/register.js');
 
 registerService();
+
+server.start();
+
 
 setInterval(async()=>{
   registerService();

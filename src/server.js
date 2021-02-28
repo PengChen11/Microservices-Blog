@@ -3,14 +3,12 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-const timeStamp = require('./middleware/timeStamp.js');
-app.use(timeStamp);
+
 const logger = require('./middleware/logger.js');
 app.use(logger);
 
@@ -20,9 +18,9 @@ app.use('/api/v1',router);
 
 
 // routes error handlers
-const fourOfour = require('./middleware/404');
+const fourOfour = require('./middleware/404.js');
 app.use('*', fourOfour);
-const svrErrors = require('./middleware/error');
+const svrErrors = require('./middleware/error.js');
 app.use(svrErrors);
 
 

@@ -18,7 +18,7 @@ module.exports = async (data, logType, type=undefined ) => {
   const time = new Date();
   // this payload is going to be recorded in DB
   let payload = {
-    service_name: 'blog',
+    service_name: 'Blog',
     time: time.toISOString(),
     type,
     message: typeof(data)==='string'? data : undefined,
@@ -39,6 +39,8 @@ module.exports = async (data, logType, type=undefined ) => {
         method: data.method,
         target_url: data.target_url,
         description: data.description,
+        requester: data.requester,
+        message: data.message,
       };
       break;
     default:
@@ -50,8 +52,9 @@ module.exports = async (data, logType, type=undefined ) => {
         method: data.method,
         target_url: data.target_url,
         description: data.description,
-        message: data.error.message,
-        code: data.error.code,
+        requester: data.requester,
+        message: data.error.message || data.error.message_spec,
+        code: data.error.code || data.error.statusCode,
         stack: data.error.stack,
       };
       break;
@@ -72,6 +75,6 @@ module.exports = async (data, logType, type=undefined ) => {
   } catch (error){
     // in general, this only happens when connection to API gateway is lost. We will figure out anothe way to notify admin later.
     // one way is to use AWS SMS Queue service.
-    console.log('Error occourred when trying to logging in to system monitoring service through API gateway', error.data);
+    console.log('Error occourred when trying to logging to system monitoring service through API gateway');
   }
 };
