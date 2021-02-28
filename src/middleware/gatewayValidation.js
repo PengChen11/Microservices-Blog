@@ -2,13 +2,14 @@
 require('dotenv').config();
 
 module.exports = (req, res, next) =>{
-  const allowedIP = process.env.ALLOWED_IP;
+  const allowedIPs = process.env.ALLOWED_IP.split(',');
 
-  if (req.ip != allowedIP) {
-    const error = {message_spec: 'The web resource you requested does not exist', statusCode:404, statusMessage:'Not Found'};
-    next(error);
+  if (!allowedIPs.includes(req.ip)) {
+    res.statusCode = 404;
+    res.send( 'The web resource you requested does not exsit');
+    res.end();
+    return;
   }
-  
   next();
 };
 
