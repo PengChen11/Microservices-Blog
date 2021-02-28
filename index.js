@@ -37,4 +37,4 @@ server.start();
 
 setInterval(async()=>{
   registerService();
-}, 60000);
+}, 30000);
