@@ -1,6 +1,6 @@
 # Microservices-Blog
 
-This is part of microservices to power my applications entire back end. 
+This is part of microservices to power my applications entire back end.
 
 For the **entire microservices project overview**, please visit the repo for [**API-Gateway**](https://github.com/PengChen11/Microservices-API_Gateway).
 
@@ -13,7 +13,7 @@ For the **entire microservices project overview**, please visit the repo for [**
   - [Overview](#overview)
   - [Feature Tasks & Requirements](#feature-tasks--requirements)
   - [Implementation Notes](#implementation-notes)
-    - [Limitations of MVP:](#limitations-of-mvp)
+    - [Limitations of MVP](#limitations-of-mvp)
   - [Authors](#authors)
   - [License](#license)
   - [Acknowledgements / Resources](#acknowledgements--resources)
@@ -59,9 +59,13 @@ Create a single resource REST API using a Mongoose model, constructed using AWS 
   - This microservice will store the API gateway's IP in it's env, when goes on line, it will register it self with the API gateway.
   - This service will maintain a heart beat with API gateway and send over it's URL every 30 sec. In this case, if this service goes off line, the API gate way will be able to re-connect to it automatically.
 
+- **Unit Tests**
+
+  - Unit tests are the easiest to apply to for each microservices. The entire routing system and internal middlewares, error handlers, models, will be tested and only over 90% pass ratio is acceptable.
+
 ## Implementation Notes
 
-### Limitations of MVP:
+### Limitations of MVP
 
 1. System monitoring limitations:
    - System logs are handled by another microservice, thus it is highly rely on internet connections.
