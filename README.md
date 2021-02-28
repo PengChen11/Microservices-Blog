@@ -1,6 +1,6 @@
 # Microservices-Blog
 
-This is part of microservices to power my applications entire back end.
+This is the blogging service, one of my microservices to handle the Blogging operations.
 
 For the **entire microservices project overview**, please visit the repo for [**API-Gateway**](https://github.com/PengChen11/Microservices-API_Gateway).
 
