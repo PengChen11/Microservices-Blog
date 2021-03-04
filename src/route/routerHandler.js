@@ -9,18 +9,37 @@ function handlerGenerator (method){
     }
 
     const modelPath = req.params.model;
-    // if requesting path is not projects nor articles, user get 404
+    // if requesting path is not /projects nor /articles, user get 404
     if (modelPath !='projects' && modelPath != 'articles') {
       next();
       return;
     }
 
+    // Pagination applied to get all routes
+    const { page = 1, limit = 10 } = req.query;
+
     try{
       let result;
       switch(method){
-        case 'getAll':
-          result = await req.model.find({});
+        case 'getAll': {
+          
+          // execute query with page and limit values
+          const records = await req.model.find()
+            .limit(limit * 1)
+            .skip((page-1) * limit)
+            .exec();
+
+          // get total documents in the Posts collection 
+          const pageCount = await req.model.countDocuments();
+
+          result = {
+            records,
+            totalPages: Math.ceil(pageCount / limit),
+            currentPage: page,
+          };
+
           break;
+        }
         case 'getOneById':
           result = await req.model.findById(req.params.id);
           break;
