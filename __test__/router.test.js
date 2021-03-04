@@ -78,10 +78,10 @@ describe ('routes tests', ()=>{
   it('testing to get all logs,', async ()=>{
 
     const articles = await mockRequest.get(`${testingURL}/articles`);
-    expect (articles.body.length).toBeGreaterThan(0);
+    expect (articles.body.records.length).toBeGreaterThan(0);
     
     const projects = await mockRequest.get(`${testingURL}/projects`);
-    expect (projects.body.length).toBeGreaterThan(0);
+    expect (projects.body.records.length).toBeGreaterThan(0);
   });
 
 
