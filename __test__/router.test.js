@@ -20,10 +20,11 @@ describe ('routes tests', ()=>{
 
   const projectData = {
     title: 'testing project',
-    sub_title: 'testing sub title',
-    description: 'testing description',
     summary: 'testing summary',
-    title_img: 'testing.url.com',
+    cover_url: 'http://cover_url',
+    site_url: 'http://site_url',
+    github_url: 'http://github_url',
+    description: 'testing description',
   };
 
 
